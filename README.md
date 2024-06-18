@@ -5,7 +5,8 @@ El presente trabajo práctico integrador pretende desarrollar las siguientes com
 * Capacidad de diseño, y habilidad instrumental necesaria para llevar a cabo proyectos de cierta envergadura, cuya complejidad exige la utilización de conocimientos adquiridos en diversas asignaturas a lo largo de la carrera.
 * Aptitud y actitud para trabajar en equipo.
 
-Objetivo
+# Objetivo
+
 Utilizando algún lenguaje de programación o algún generador de lexer y parser para determinado lenguaje de programación deberán construir los analizadores léxico y sintáctico que permita analizar, validar y transformar un documento JSON que describe y almacena información de empresas y proyectos.
 
 El parser a construir recibe un archivo en formato JSON y deberá indicar si está bien construido (adecuado al formato indicado, sin errores) de otra manera indicar los errores; adicionalmente a medida que analiza el documento deberá transformar el contenido en un documento HTML.
