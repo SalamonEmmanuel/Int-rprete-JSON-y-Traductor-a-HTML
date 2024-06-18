@@ -9,8 +9,6 @@ tokens = ['string', 'integer', 'float', 'bool', 'date', 't_version', 't_firma_di
         't_fecha_contratacion', 't_estado', 't_fecha_inicio', 't_fecha_fin', 'CARGO_EMPLEADO', 'coma', 'pa', 'dp', 'pc', 'lla', 'llc', 'patron_url', 'ESTADO_PROYECTO']
 
 
-#hola
-
 reservadas = {
     '"version"': 't_version',
     '"firma_digital"': 't_firma_digital',
