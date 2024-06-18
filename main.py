@@ -4,9 +4,10 @@ import re
 # Definición de los tokens
 tokens = ['string', 'integer', 'float', 'bool', 'date', 't_version', 't_firma_digital',
         't_nombre_empresa', 't_fundacion', 't_calle', 't_ciudad', 't_pais',
-        't_ingresos_anuales', 't_pyme', 't_link',
-        't_nombre', 't_jefe', 't_edad', 't_cargo', 't_salario', 't_activo',
-        't_fecha_contratacion', 't_estado', 't_fecha_inicio', 't_fecha_fin', 'CARGO_EMPLEADO', 'coma', 'pa', 'dp', 'pc', 'lla', 'llc', 'patron_url', 'ESTADO_PROYECTO']
+        't_ingresos_anuales', 't_pyme', 't_link', 't_nombre', 't_jefe', 
+        't_edad', 't_cargo', 't_salario', 't_activo','t_fecha_contratacion', 
+        't_estado', 't_fecha_inicio', 't_fecha_fin', 'CARGO_EMPLEADO', 'coma', 
+        'pa', 'dp', 'pc', 'lla', 'llc', 'patron_url', 'ESTADO_PROYECTO']
 
 
 reservadas = {
