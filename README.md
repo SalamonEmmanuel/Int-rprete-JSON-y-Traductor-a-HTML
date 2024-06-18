@@ -1,9 +1,9 @@
 # Int-rprete-JSON-y-Traductor-a-HTML
 
 El presente trabajo práctico integrador pretende desarrollar las siguientes competencias de la asignatura Sintaxis y Semántica de Lenguajes:
-# Capacidad para conocer los fundamentos teóricos de los lenguajes de programación y las técnicas de procesamiento léxico, sintáctico asociadas, y saber aplicarlas para la creación, diseño y procesamiento de lenguajes de programación .
-# Capacidad de diseño, y habilidad instrumental necesaria para llevar a cabo proyectos de cierta envergadura, cuya complejidad exige la utilización de conocimientos adquiridos en diversas asignaturas a lo largo de la carrera.
-# Aptitud y actitud para trabajar en equipo.
+* Capacidad para conocer los fundamentos teóricos de los lenguajes de programación y las técnicas de procesamiento léxico, sintáctico asociadas, y saber aplicarlas para la creación, diseño y procesamiento de lenguajes de programación .
+* Capacidad de diseño, y habilidad instrumental necesaria para llevar a cabo proyectos de cierta envergadura, cuya complejidad exige la utilización de conocimientos adquiridos en diversas asignaturas a lo largo de la carrera.
+* Aptitud y actitud para trabajar en equipo.
 
 Objetivo
 Utilizando algún lenguaje de programación o algún generador de lexer y parser para determinado lenguaje de programación deberán construir los analizadores léxico y sintáctico que permita analizar, validar y transformar un documento JSON que describe y almacena información de empresas y proyectos.
