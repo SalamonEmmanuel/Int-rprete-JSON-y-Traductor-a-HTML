@@ -21,7 +21,7 @@ reservadas = {
     '"ingresos_anuales"': 't_ingresos_anuales',
     '"pyme"': 't_pyme',
     '"link"': 't_link', 
-    '"nombre"': 't_nombre', #Nombre para Departamento, Empleado, SubDepartamento y proyecto
+    '"nombre"': 't_nombre', 
     '"jefe"': 't_jefe', 
     '"edad"': 't_edad', 
     '"cargo"': 't_cargo', 
