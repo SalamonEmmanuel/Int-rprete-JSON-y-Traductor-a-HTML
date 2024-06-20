@@ -8,6 +8,7 @@ tokens = ['string', 'integer', 'float', 'bool', 'date', 't_version', 't_firma_di
           't_estado', 't_fecha_inicio', 't_fecha_fin', 'CARGO_EMPLEADO', 'coma', 
           'pa', 'dp', 'pc', 'lla', 'llc', 'patron_url', 'ESTADO_PROYECTO']
 
+# Diccionario de palabras reservadas que el analizador debe reconocer y asignar a tipos específicos.
 reservadas = {
     '"version"': 't_version',
     '"firma_digital"': 't_firma_digital',
@@ -31,7 +32,7 @@ reservadas = {
     '"fecha_fin"':'t_fecha_fin'
 }
 
-# Definición de las expresiones regulares para los tokens
+# Expresiones regulares para los tokens
 t_pa = r'\['
 t_dp = r':'
 t_pc = r'\]'
@@ -42,6 +43,7 @@ t_coma = r','
 # Ignorar espacios en blanco y tabulaciones
 t_ignore = ' \t'
 
+# Funciones para tokens más complejos, como URLs y valores específicos de cadenas, que usan expresiones regulares para coincidir con patrones específicos.
 def t_patron_url(t):
     r'https?://[a-zA-Z0-9.-]+(?:\:\d+)?(?:/[a-zA-Z0-9._/#-]*)?'
     t.value = f"patron_url: {t.value}"
@@ -57,6 +59,8 @@ def t_ESTADO_PROYECTO(t):
     t.value = f"ESTADO_PROYECTO: {t.value[1:-1]}"  # Excluimos las comillas dobles
     return t
 
+
+# Funciones para reconocer diferentes tipos de datos
 def t_float(t):
     r'\d+\.\d+'
     t.value = float(t.value)
@@ -83,10 +87,12 @@ def t_string(t):
         t.type = 'string'
     return t
 
+# Ajusta el contador de líneas cuando se encuentra una nueva línea.
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
+# Maneja caracteres no reconocidos, imprimiendo un mensaje de error y avanzando al siguiente carácter.
 def t_error(t):
     print("Caracter no reconocido: '%s'" % t.value[0])
     t.lexer.skip(1)
