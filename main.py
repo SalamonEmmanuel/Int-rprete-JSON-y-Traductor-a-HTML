@@ -42,6 +42,7 @@ t_dp = ':'
 t_pc = '\\]'
 t_lla = '\\{'
 t_llc = '\\}'
+t_coma = ','
 
 # Ignorar espacios en blanco y tabulaciones
 t_ignore = ' \t'
