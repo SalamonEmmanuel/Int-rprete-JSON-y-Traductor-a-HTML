@@ -32,7 +32,6 @@ reservadas = {
     '"fecha_fin"':'t_fecha_fin'
 }
 
-# Expresiones regulares para los tokens
 t_pa = r'\['
 t_dp = r':'
 t_pc = r'\]'
