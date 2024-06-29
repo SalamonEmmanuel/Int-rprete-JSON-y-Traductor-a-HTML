@@ -1,5 +1,9 @@
 import ply.lex as lex
-
+#-----------------------------------------------------------------------------------------------------
+# IMPORTANTE
+# Este parser hecho por chatGPT es un ejemplo que ocupé para ver el funcionamiento de un parser, 
+# ADEMAS creo que algunas cosas las hizo mal porque no coincide con lo que investigué, chaque con esto
+#-----------------------------------------------------------------------------------------------------
 # Definición de los tokens
 tokens = ['string', 'integer', 'float', 'bool', 'date', 't_version', 't_firma_digital',
           't_nombre_empresa', 't_fundacion', 't_calle', 't_ciudad', 't_pais',
