@@ -1,13 +1,5 @@
 import ply.lex as lex
 
-# Definición de los tokens
-tokens = ['string', 'integer', 'float', 'bool', 'date', 't_version', 't_firma_digital',
-          't_nombre_empresa', 't_fundacion', 't_calle', 't_ciudad', 't_pais',
-          't_ingresos_anuales', 't_pyme', 't_link', 't_nombre', 't_jefe', 
-          't_edad', 't_cargo', 't_salario', 't_activo', 't_fecha_contratacion', 
-          't_estado', 't_fecha_inicio', 't_fecha_fin', 'CARGO_EMPLEADO', 'coma', 
-          'pa', 'dp', 'pc', 'lla', 'llc', 'patron_url', 'ESTADO_PROYECTO']
-
 # Diccionario de palabras reservadas que el analizador debe reconocer y asignar a tipos específicos.
 reservadas = {
     '"version"': 't_version',
@@ -31,6 +23,12 @@ reservadas = {
     '"fecha_inicio"': 't_fecha_inicio',
     '"fecha_fin"':'t_fecha_fin'
 }
+
+# Definición de los tokens
+tokens = ['string', 'integer', 'float', 'bool', 'date', 'CARGO_EMPLEADO', 'coma', 
+          'pa', 'dp', 'pc', 'lla', 'llc', 'patron_url', 'ESTADO_PROYECTO'] + list(reservadas.values())
+# Unimos el diccionario de palabras reservadas con los tokens
+
 
 # Expresiones regulares para los tokens
 t_pa = r'\['
@@ -58,7 +56,6 @@ def t_ESTADO_PROYECTO(t):
     r'"(?:To\sdo|In\sprogress|Canceled|Done|On\shold)"'
     t.value = f"ESTADO_PROYECTO: {t.value[1:-1]}"  # Excluimos las comillas dobles
     return t
-
 
 # Funciones para reconocer diferentes tipos de datos
 def t_float(t):
@@ -94,7 +91,7 @@ def t_newline(t):
 
 # Maneja caracteres no reconocidos, imprimiendo un mensaje de error y avanzando al siguiente carácter.
 def t_error(t):
-    print("Caracter no reconocido: '%s'" % t.value[0])
+    print(f"Caracter no reconocido: '{t.value[0]}' en la línea {t.lexer.lineno}")
     t.lexer.skip(1)
 
 lexer = lex.lex()
