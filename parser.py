@@ -3,106 +3,202 @@ from lexer import tokens
 
 # Definición de la gramática
 
-def p_sigma(p):
-    '''Sigma : lla Empresas comma Version comma Firma_digital llc
-             | lla Empresas comma Firma_digital comma Version llc
-             | lla Version comma Empresas comma Firma_digital llc
-             | lla Version comma Firma_digital comma Empresas llc
-             | lla Firma_digital comma Version comma Empresas llc
-             | lla Firma_digital comma Empresas comma Version llc
-             | lla Empresas comma Version llc
-             | lla Empresas comma Firma_digital llc'''
+#regla1
+def p_Sigma(p):
+    '''Sigma : lla EmpresasI comma Version comma Firma_digital llc
+             | lla EmpresasI comma Firma_digital comma Version llc
+             | lla Version comma EmpresasI comma Firma_digital llc
+             | lla Version comma Firma_digital comma pa EmpresasI pc llc
+             | lla Firma_digital comma Version comma EmpresasI llc
+             | lla Firma_digital comma EmpresasI comma Version llc
+             | lla EmpresasI comma Version llc
+             | lla EmpresasI comma Firma_digital llc
+             | lla EmpresasI llc '''
+             
+#regla2
+def p_EmpresasI(p):
+    '''EmpresasI : dp pa Empresas pc'''
 
-def p_empresas(p):
+#regla
+def p_Empresas(p):
     '''Empresas : lla EmpresaE llc'''
 
-def p_empresaE(p):
-    '''EmpresaE : EmpresaE comma Empresa
+#regla
+def p_EmpresaE(p):
+    '''EmpresaE : EmpresaE
                 | Empresa'''
 
-def p_empresa(p):
-    '''Empresa : lla Nombre_empresa comma fundacion comma Direccion comma ingresos_anuales comma Pyme comma Link comma Departamentos llc
-               | lla Nombre_empresa comma fundacion comma Direccion comma ingresos_anuales comma Pyme comma Departamentos llc'''
+#regla
+def p_Empresa(p):
+    '''Empresa : lla Nombre_empresa comma Fundacion comma Direccion comma Ingresos_anuales comma Pyme comma Link comma Departamentos llc
+               | lla Nombre_empresa comma Fundacion comma Direccion comma Ingresos_anuales comma Pyme comma Departamentos llc'''
 
-def p_nombre_empresa(p):
+#regla
+def p_Nombre_empresa(p):
     '''Nombre_empresa : nombre_empresa dp string'''
 
+#regla
 def p_direccion(p):
-    '''Direccion : lla calle comma ciudad comma pais llc
-                 | lla calle comma pais comma ciudad llc
-                 | lla ciudad comma calle comma pais llc
-                 | lla ciudad comma pais comma calle llc
-                 | lla pais comma calle comma ciudad llc
-                 | lla pais comma ciudad comma calle llc
+    '''Direccion : lla Calle comma ciudad comma Pais llc
+                 | lla Calle comma Pais comma ciudad llc
+                 | lla ciudad comma Calle comma Pais llc
+                 | lla ciudad comma Pais comma Calle llc
+                 | lla Pais comma Calle comma ciudad llc
+                 | lla Pais comma ciudad comma Calle llc
                  | lla llc'''
 
-def p_departamentos(p):
+#regla
+def p_Departamentos(p):
     '''Departamentos : pa DepartamentoD pc'''
 
-def p_departamentoD(p):
-    '''DepartamentoD : DepartamentoD comma Departamento
+#regla
+def p_DepartamentoD(p):
+    '''DepartamentoD : DepartamentoD
                      | Departamento'''
 
-def p_departamento(p):
-    '''Departamento : lla nombre comma jefe comma Subdepartamentos llc
-                    | lla nombre comma Subdepartamentos llc
-                    | lla Subdepartamentos comma nombre comma jefe llc
-                    | lla Subdepartamentos comma nombre llc
-                    | lla jefe comma nombre comma Subdepartamentos llc
-                    | lla jefe comma Subdepartamentos comma nombre llc'''   
+#regla
+def p_Departamento(p):
+    '''Departamento : lla Nombre comma Jefe comma Subdepartamentos llc
+                    | lla Nombre comma Subdepartamentos llc
+                    | lla Subdepartamentos comma Nombre comma Jefe llc
+                    | lla Subdepartamentos comma Nombre llc
+                    | lla Jefe comma Nombre comma Subdepartamentos llc
+                    | lla Jefe comma Subdepartamentos comma Nombre llc'''   
 
-def p_subdepartamentos(p):
+#regla
+def p_Subdepartamentos(p):
     '''Subdepartamentos : pa SubdepartamentoS pc'''
 
-def p_subdepartamentoS(p):
-    '''SubdepartamentoS : SubdepartamentoS comma Subdepartamento
+#regla
+def p_SubdepartamentoS(p):
+    '''SubdepartamentoS : SubdepartamentoS 
                         | Subdepartamento'''
 
-def p_subdepartamento(p):
-    '''Subdepartamento : lla nombre comma jefe comma Empleados llc
-                       | lla nombre comma Empleados llc
-                       | lla Empleados comma nombre comma jefe llc
-                       | lla Empleados comma nombre llc
-                       | lla jefe comma nombre comma Empleados llc
-                       | lla jefe comma Empleados comma nombre llc'''
+#regla
+def p_Subdepartamento(p):
+    '''Subdepartamento : lla Nombre comma Jefe comma Empleados llc
+                       | lla Nombre llc
+                       | lla Nombre comma Jefe llc
+                       | lla Nombre comma Empleados llc'''
 
-def p_empleados(p):
+#regla
+def p_Empleados(p):
     '''Empleados : pa EmpleadoE pc
                  | pa pc'''
-    
-def p_empleadoE(p):
-    '''EmpleadoE : EmpleadoE comma Empleado
+
+#regla   
+def p_EmpleadoE(p):
+    '''EmpleadoE : EmpleadoE 
                  | Empleado'''
 
+#regla
 def p_empleado(p):
-    '''Empleado : lla nombre comma edad comma cargo comma salario comma activo comma fecha_contratacion llc
-                | lla nombre comma cargo comma salario comma activo comma fecha_contratacion llc
-                | lla nombre comma edad comma salario comma activo comma fecha_contratacion llc'''
+    '''Empleado : lla nombre comma Edad comma Cargo comma Salario comma Activo comma Fecha_contratacion comma Proyectos llc
+                | lla nombre comma Cargo comma Salario comma Activo comma Fecha_contratacion llc
+                | lla nombre comma Cargo comma Edad comma Salario comma Activo comma Fecha_contratacion comma Proyectos llc'''
 
-def p_proyectos(p):
+#regla
+def p_Proyectos(p):
     '''Proyectos : pa ProyectoP pc
                  | pa pc'''
 
-def p_proyectoP(p):
-    '''ProyectoP : ProyectoP comma Proyecto
+#regla
+def p_ProyectoP(p):
+    '''ProyectoP : ProyectoP 
                  | Proyecto'''
 
+#regla
 def p_proyecto(p):
-    '''Proyecto : lla nombre comma estado comma fecha_inicio comma fecha_fin llc
-                | lla nombre comma fecha_inicio llc
-                | lla nombre comma estado comma fecha_inicio llc'''
+    '''Proyecto : lla nombre comma estado comma Fecha_inicio comma Fecha_fin llc
+                | lla nombre comma Fecha_inicio llc
+                | lla nombre comma Estado comma Fecha_inicio llc'''
 
-def p_firma_digital(p):
-    '''Firma_digital : firma_digital dp string'''
+#deriva de Sigma
+#regla
+def p_Version(p):
+    '''Version : version dp null
+               | version dp string'''
 
-def p_version(p):
-    '''Version : version dp string'''
+    
+#regla
+def p_Firma_digital(p):
+    '''Firma_digital : firma_digital dp string
+                     | firma_digital dp null'''
 
-def p_pyme(p):
+
+#regla
+def p_Estado(p):
+    '''Estado : estado dp ESTADO_PROYECTO
+              | estado dp null'''
+
+#regla
+def p_Jefe(p):
+    '''Jefe : jefe dp null
+            | jefe dp string'''
+
+#regla
+def p_Link(p):
+    '''Link : link dp patron_url
+            | link dp null'''
+
+#regla
+def p_Fecha_inicio(p):
+    '''Fecha_inicio : fecha_inicio dp date'''
+
+
+#regla
+def p_Fecha_fin(p):
+    '''Fecha_fin : fecha_fin dp null
+                 | fecha_fin dp date'''
+
+#regla
+def p_Fecha_contratacion(p):
+    '''Fecha_contratacion : fecha_contratacion dp date'''
+
+#regla
+def p_Nombre(p):
+    '''Nombre : nombre dp string'''
+
+#regla
+def p_Pais(p):
+    '''Pais : pais dp string'''
+
+#regla
+def p_Calle(p):
+    '''Calle : calle dp string'''
+
+#regla
+def p_Ciudad(p):
+    '''Ciudad : ciudad dp string'''
+
+#regla
+def p_Fundacion(p):
+    '''Fundacion : fundacion dp integer'''
+
+#regla
+def p_Activo(p):
+    '''Activo : activo dp bool'''
+
+#regla
+def p_Pyme(p):
     '''Pyme : pyme dp bool'''
 
-def p_link(p):
-    '''Link : link dp patron_url'''
+#regla
+def p_Ingresos_anuales(p):
+    '''Ingresos_anuales : ingresos_anuales dp float'''
+
+#regla
+def p_Cargo(p):
+    '''Cargo : cargo dp CARGO_EMPLEADO'''
+
+#regla
+def p_Salario(p):
+    '''Salario : salario dp float'''
+
+#regla
+def p_Edad(p):
+    '''Edad : edad dp integer'''
+    
 
 def p_error(p):
     print(f"Error de sintaxis en '{p.value}'")
