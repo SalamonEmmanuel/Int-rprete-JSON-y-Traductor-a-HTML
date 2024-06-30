@@ -1,42 +1,99 @@
 import ply.lex as lex
 
-# Diccionario de palabras reservadas que el analizador debe reconocer y asignar a tipos específicos.
-reservadas = {
-    '"version"': 't_version',
-    '"firma_digital"': 't_firma_digital',
-    '"nombre_empresa"' : 't_nombre_empresa',
-    '"fundacion"': 't_fundacion',
-    '"calle"': 't_calle',
-    '"ciudad"': 't_ciudad',
-    '"pais"': 't_pais',
-    '"ingresos_anuales"': 't_ingresos_anuales',
-    '"pyme"': 't_pyme',
-    '"link"': 't_link', 
-    '"nombre"': 't_nombre', 
-    '"jefe"': 't_jefe', 
-    '"edad"': 't_edad', 
-    '"cargo"': 't_cargo', 
-    '"salario"': 't_salario',
-    '"activo"': 't_activo',
-    '"fecha_contratacion"': 't_fecha_contratacion',
-    '"estado"': 't_estado', 
-    '"fecha_inicio"': 't_fecha_inicio',
-    '"fecha_fin"':'t_fecha_fin'
-}
-
 # Definición de los tokens
-tokens = ['string', 'integer', 'float', 'bool', 'date', 'CARGO_EMPLEADO', 'coma', 
-          'pa', 'dp', 'pc', 'lla', 'llc', 'patron_url', 'ESTADO_PROYECTO', 'null'] + list(reservadas.values())
-# Unimos el diccionario de palabras reservadas con los tokens
-
+tokens = ['integer', 'float', 'bool', 'date', 'CARGO_EMPLEADO', 'comma', 
+          'pa', 'dp', 'pc', 'lla', 'llc', 'patron_url', 'ESTADO_PROYECTO', 'null',
+          'fundacion', 'ingresos_anuales', 'pyme', 'link', 'calle', 'ciudad',
+          'pais', 'nombre', 'jefe', 'edad', 'cargo', 'salario', 'activo', 'fecha_contratacion',
+          'estado', 'fecha_inicio', 'fecha_fin', 'version', 'firma_digital', 'nombre_empresa', 'string'] 
 
 # Expresiones regulares para los tokens
+def t_fundacion(t):
+    r'\"fundacion\"'
+    return t
+
+def t_ingresos_anuales(t):
+    r'\"ingresos_anuales\"'
+    return t
+
+def t_pyme(t):
+    r'\"pyme\"'
+    return t
+
+def t_link(t):
+    r'\"link\"'
+    return t
+
+def t_calle(t):
+    r'\"calle\"'
+    return t
+
+def t_ciudad(t):
+    r'\"ciudad\"'
+    return t
+
+def t_pais(t):
+    r'\"pais\"'
+    return t
+
+def t_nombre(t):
+    r'\"nombre\"'
+    return t
+
+def t_jefe(t):
+    r'\"jefe\"'
+    return t
+
+def t_edad(t):
+    r'\"edad\"'
+    return t
+
+def t_cargo(t):
+    r'\"cargo\"'
+    return t
+
+def t_salario(t):
+    r'\"salario\"'
+    return t
+
+def t_activo(t):
+    r'\"activo\"'
+    return t
+
+def t_fecha_contratacion(t):
+    r'\"fecha_contratacion\"'
+    return t
+
+def t_estado(t):
+    r'\"estado\"'
+    return t
+
+def t_fecha_inicio(t):
+    r'\"fecha_inicio\"'
+    return t
+
+def t_fecha_fin(t):
+    r'\"fecha_fin\"'
+    return t
+
+def t_nombre_empresa(t):
+    r'\"nombre_empresa\"'
+    return t
+
+def t_firma_digital(t):
+    r'\"firma_digital\"'
+    return t
+
+def t_version(t):
+    r'\"version\"'
+    return t
+
 t_pa = r'\['
 t_dp = r':'
 t_pc = r'\]'
 t_lla = r'\{'
 t_llc = r'\}'
-t_coma = r','
+t_comma = r','
 
 # Ignorar espacios en blanco y tabulaciones
 t_ignore = ' \t'
@@ -48,12 +105,12 @@ def t_patron_url(t):
     return t
 
 def t_CARGO_EMPLEADO(t):
-    r'"(?:Product\sAnalyst|Project\sManager|UX\sdesigner|Marketing|Developer|Devops|DB\sadmin)"'
+    r'\"(?:Product\sAnalyst|Project\sManager|UX\sdesigner|Marketing|Developer|Devops|DB\sadmin)\"'
     t.value = f"CARGO_EMPLEADO: {t.value[1:-1]}"  # Excluimos las comillas dobles
     return t
 
 def t_ESTADO_PROYECTO(t):
-    r'"(?:To\sdo|In\sprogress|Canceled|Done|On\shold)"'
+    r'\"(?:To\sdo|In\sprogress|Canceled|Done|On\shold)\"'
     t.value = f"ESTADO_PROYECTO: {t.value[1:-1]}"  # Excluimos las comillas dobles
     return t
 
@@ -78,15 +135,11 @@ def t_null(t):
     return t
 
 def t_date(t):
-    r'"(19[0-9]{2}|20[0-9]{2})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])"'
+    r'\"(19[0-9]{2}|20[0-9]{2})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\"'
     return t
 
 def t_string(t):
-    r'"(?:[^"\\]|\\.)*"'
-    if t.value in reservadas:
-        t.type = reservadas[t.value]
-    else:
-        t.type = 'string'
+    r'\"(?:[^\"\\]|\\.)*\"'
     return t
 
 # Ajusta el contador de líneas cuando se encuentra una nueva línea.
