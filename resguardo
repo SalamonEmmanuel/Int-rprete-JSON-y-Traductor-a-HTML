@@ -163,3 +163,126 @@ while True:
     lexer.input(entrada)
     for token in lexer:
         print(f"Token: {token.type}, Valor: {token.value}")
+
+
+
+
+----
+
+import ply.yacc as yacc
+from lexer import tokens
+
+# Definición de la gramática
+
+def p_sigma(p):
+    '''Sigma : lla Empresas comma Version comma FirmaDigital llc
+             | lla Empresas comma FirmaDigital comma Version llc
+             | lla Version comma Empresas comma FirmaDigital llc
+             | lla Version comma FirmaDigital comma Empresas llc
+             | lla FirmaDigital comma Version comma Empresas llc
+             | lla FirmaDigital comma Empresas comma Version llc
+             | lla Empresas comma Version llc
+             | lla Empresas comma FirmaDigital llc
+             | lla Empresas llc'''
+
+def p_empresas(p):
+    '''Empresas : lla EmpresaE llc'''
+
+def p_empresaE(p):
+    '''EmpresaE : EmpresaE comma Empresa
+                | Empresa'''
+
+def p_empresa(p):
+    '''Empresa : lla NombreEmpresa comma fundacion comma Direccion comma ingresos_anuales comma pyme comma link comma Departamentos llc
+               | lla NombreEmpresa comma fundacion comma Direccion comma ingresos_anuales comma pyme comma Departamentos llc'''
+
+def p_NombreEmpresa(p):
+    '''NombreEmpresa : nombre_empresa dp string'''
+
+def p_Direccion(p):
+    '''Direccion : lla calle comma ciudad comma pais llc
+                 | lla calle comma pais comma ciudad llc
+                 | lla ciudad comma calle comma pais llc
+                 | lla ciudad comma pais comma calle llc
+                 | lla pais comma calle comma ciudad llc
+                 | lla pais comma ciudad comma calle llc
+                 | lla llc'''
+                 
+def p_Departamentos(p):
+    '''Departamentos : pa DepartamentoD pc'''
+
+def p_departamentoD(p):
+    '''DepartamentoD : DepartamentoD comma Departamento
+                     | Departamento'''
+
+def p_Departamento(p):
+    '''Departamento : lla nombre comma jefe comma Subdepartamentos llc
+                    | lla nombre comma Subdepartamentos llc
+                    | lla Subdepartamentos comma nombre comma jefe llc
+                    | lla Subdepartamentos comma nombre llc
+                    | lla jefe comma nombre comma Subdepartamentos llc
+                    | lla jefe comma Subdepartamentos comma nombre llc'''   
+
+def p_Subdepartamentos(p):
+    '''Subdepartamentos : pa SubdepartamentoS pc'''
+
+def p_subdepartamentoS(p):
+    '''SubdepartamentoS : SubdepartamentoS comma Subdepartamento
+                        | Subdepartamento'''
+
+def p_Subdepartamento(p):
+    '''Subdepartamento : lla nombre comma jefe comma Empleados llc
+                       | lla nombre comma Empleados llc
+                       | lla Empleados comma nombre comma jefe llc
+                       | lla Empleados comma nombre llc
+                       | lla jefe comma nombre comma Empleados llc
+                       | lla jefe comma Empleados comma nombre llc'''
+
+def p_Empleados(p):
+    '''Empleados : pa EmpleadoE pc'''
+    
+def p_empleadoE(p):
+    '''EmpleadoE : EmpleadoE comma Empleado
+                 | Empleado'''
+
+def p_Empleado(p):
+    '''Empleado : lla nombre comma edad comma cargo comma salario comma activo comma fecha_contratacion llc
+                | lla nombre comma edad comma cargo comma activo comma fecha_contratacion llc
+                | lla nombre comma cargo comma salario comma activo comma fecha_contratacion llc
+                | lla nombre comma edad comma cargo comma salario comma fecha_contratacion llc
+                | lla nombre comma edad comma salario comma activo comma fecha_contratacion llc'''
+
+def p_Proyectos(p):
+    '''Proyectos : pa ProyectoE pc'''
+
+def p_proyectoE(p):
+    '''ProyectoE : ProyectoE comma Proyecto
+                 | Proyecto'''
+
+def p_Proyecto(p):
+    '''Proyecto : lla nombre comma ESTADO_PROYECTO comma fecha_inicio comma fecha_fin comma Empleados llc
+                | lla nombre comma ESTADO_PROYECTO comma fecha_inicio comma Empleados llc'''
+
+def p_FirmaDigital(p):
+    '''FirmaDigital : firma_digital dp string'''
+
+def p_Version(p):
+    '''Version : version dp string'''
+
+def p_error(p):
+    if p:
+        print(f"Error de sintaxis en '{p.value}' en la línea {p.lineno}")
+    else:
+        print("Error de sintaxis en la entrada")
+
+parser = yacc.yacc()
+
+while True:
+    try:
+        s = input('> ')
+    except EOFError:
+        break
+    if not s:
+        continue
+    result = parser.parse(s)
+    print(result)
