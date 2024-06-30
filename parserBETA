@@ -1,0 +1,461 @@
+import ply.yacc as yacc
+from lexer import tokens
+
+# Definición de la gramática
+
+#regla1
+def p_Sigma(p):
+    '''Sigma : lla pa Empresas pc comma Version comma Firma_digital llc
+             | lla pa Empresas pa comma Firma_digital comma Version llc
+             | lla Version comma pa Empresas pc comma Firma_digital llc
+             | lla Version comma Firma_digital comma pa Empresas pc llc
+             | lla Firma_digital comma Version comma pa Empresas pc llc
+             | lla Firma_digital comma pa Empresas pc comma Version llc
+             | lla pa Empresas pc comma Version llc
+             | lla pa Empresas pc comma Firma_digital llc
+             | lla pa Empresas pc llc '''
+
+#regla2
+def p_Empresas(p):
+    '''Empresas : lla EmpresaE llc'''
+
+#regla3
+def p_EmpresaE(p):
+    '''EmpresaE : EmpresaE
+                | empresa'''
+
+#regla4
+def p_empresa(p):
+    '''Empresa : lla nombre_empresa comma fundacion comma Direccion comma ingresos_anuales comma Pyme comma Link comma Departamentos llc
+               | lla nombre_empresa comma fundacion comma Direccion comma ingresos_anuales comma Pyme comma Departamentos llc'''
+
+#regla5
+def p_nombre_empresa(p):
+    '''nombre_empresa : nombre_empresa dp string'''
+
+#regla6
+def p_direccion(p):
+    '''Direccion : lla calle comma ciudad comma pais llc
+                 | lla calle comma pais comma ciudad llc
+                 | lla ciudad comma calle comma pais llc
+                 | lla ciudad comma pais comma calle llc
+                 | lla pais comma calle comma ciudad llc
+                 | lla pais comma ciudad comma calle llc
+                 | lla llc'''
+
+#regla7
+def p_Departamentos(p):
+    '''Departamentos : pa DepartamentoD pc'''
+
+#regla8
+def p_DepartamentoD(p):
+    '''DepartamentoD : DepartamentoD
+                     | Departamento'''
+
+#regla9
+def p_Departamento(p):
+    '''Departamento : lla nombre comma Jefe comma Subdepartamentos llc
+                    | lla nombre comma Subdepartamentos llc
+                    | lla Subdepartamentos comma nombre comma Jefe llc
+                    | lla Subdepartamentos comma nombre llc
+                    | lla Jefe comma nombre comma Subdepartamentos llc
+                    | lla Jefe comma Subdepartamentos comma nombre llc'''   
+
+#regla10
+def p_Subdepartamentos(p):
+    '''Subdepartamentos : pa SubdepartamentoS pc'''
+
+#regla11
+def p_SubdepartamentoS(p):
+    '''SubdepartamentoS : SubdepartamentoS 
+                        | Subdepartamento'''
+
+#regla12
+def p_Subdepartamento(p):
+    '''Subdepartamento : lla nombre comma Jefe comma Empleados llc
+                       | lla nombre llc
+                       | lla nombre comma Jefe llc
+                       | lla nombre comma Empleados llc'''
+
+#regla13
+def p_Empleados(p):
+    '''Empleados : pa EmpleadoE pc
+                 | pa pc'''
+
+#regla14    
+def p_EmpleadoE(p):
+    '''EmpleadoE : EmpleadoE 
+                 | Empleado'''
+
+#regla15
+def p_empleado(p):
+    '''Empleado : lla nombre comma edad comma cargo comma salario comma activo comma fecha_contratacion comma Proyectos llc
+                | lla nombre comma cargo comma salario comma activo comma fecha_contratacion llc
+                | lla nombre comma edad comma salario comma activo comma fecha_contratacion comma Proyectos llc'''
+
+#regla16
+def p_Proyectos(p):
+    '''Proyectos : pa ProyectoP pc
+                 | pa pc'''
+
+#regla17
+def p_ProyectoP(p):
+    '''ProyectoP : ProyectoP 
+                 | Proyecto'''
+
+#regla18
+def p_proyecto(p):
+    '''Proyecto : lla nombre comma estado comma fecha_inicio comma fecha_fin llc
+                | lla nombre comma fecha_inicio llc
+                | lla nombre comma Estado comma fecha_inicio llc'''
+
+#deriva de Sigma
+#regla19
+def p_Version(p):
+    '''Version : null
+               | version'''
+
+#regla20
+def version(p):
+    '''version : string'''
+    
+#regla21
+def p_Firma_digital(p):
+    '''Firma_digital : firma_digital
+                     | null'''
+
+#regla22
+def p_firma_digital(p):
+    '''firma_digital : string'''
+
+#regla23
+def p_Estado(p):
+    '''Estado : estado
+              | null'''
+
+#regla24
+def estado(p):
+    '''estado : dp ESTADO_PROYECTO'''
+
+#regla 25
+def p_Jefe(p):
+    '''Jefe : null
+            | jefe'''
+
+#regla26
+def p_jefe(p):
+    '''jefe : string'''
+
+#regla28
+def p_Link(p):
+    '''Link : link
+            | null'''
+
+#regla28
+def p_link(p):
+    '''t_link : patron_url'''
+
+#regla29
+def p_fecha_inicio(p):
+    '''fecha_inicio : t_fecha_inicio'''
+
+def p_t_fecha_inicio(p):
+    '''t_fecha_inicio : date'''
+
+def p_fecha_fin(p):
+    '''fecha_fin : null
+                 | t_fecha_fin'''
+
+def p_t_fecha_fin(p):
+    '''t_fecha_fin : date'''
+
+def p_fecha_contratacion(p):
+    '''fecha_contratacion : t_fecha_contratacion'''
+
+def p_t_fecha_contratacion(p):
+    '''t_fecha_contratacion : date'''
+
+def p_nombre(p):
+    '''nombre : t_nombre'''
+
+def p_t_nombre(p):
+    '''t_nombre : string'''
+
+def p_pais(p):
+    '''pais : t_pais'''
+
+def p_t_pais(p):
+    '''t_pais : string'''
+
+def p_calle(p):
+    '''calle : t_calle'''
+
+def p_t_calle(p):
+    '''t_calle : string'''
+
+def p_ciudad(p):
+    '''ciudad : t_ciudad'''
+
+def p_t_ciudad(p):
+    '''t_ciudad : string'''
+
+def p_fundacion(p):
+    '''fundacion : t_fundacion'''
+
+def p_t_fundacion(p):
+    '''t_fundacion : integer'''
+
+def p_activo(p):
+    '''activo : t_activo'''
+
+def p_t_activo(p):
+    '''t_activo : bool'''
+
+def p_pyme(p):
+    '''pyme : t_pyme'''
+
+def p_t_pyme(p):
+    '''t_pyme : bool'''
+
+def p_ingresos_anuales(p):
+    '''ingresos_anuales : t_ingresos_anuales'''
+
+def p_t_ingresos_anuales(p):
+    '''t_ingresos_anuales : float'''
+
+def p_cargo(p):
+    '''cargo : t_cargo'''
+
+def p_t_cargo(p):
+    '''t_cargo : "Product Analyst"
+               | "Project Manager"
+               | "UX designer"
+               | "Marketing"
+               | "Developer"
+               | "Devops"
+               | "DB admin"'''
+
+def p_salario(p):
+    '''salario : t_salario'''
+
+def p_t_salario(p):
+    '''t_salario : float'''
+
+def p_edad(p):
+    '''edad : t_edad'''
+
+def p_t_edad(p):
+    '''t_edad : integer'''
+
+
+def p_version(p):
+    '''Version : version dp string'''
+
+def p_pyme(p):
+    '''Pyme : pyme dp bool'''
+
+def p_link(p):
+    '''Link : link dp patron_url'''
+
+def p_error(p):
+    print(f"Error de sintaxis en '{p.value}'")
+
+parser = yacc.yacc()
+
+# Probamos el parser
+data = '''{
+    "empresas": [
+        {
+            "nombre_empresa": "Mc Donalds",
+            "fundacion": 2005,
+            "direccion": {
+                "calle": "Calle Falsa 123",
+                "ciudad": "Springfield",
+                "pais": "USA"
+            },
+            "ingresos_anuales": 200000.25,
+            "pyme": false,
+            "link": "https://www.mcdonalds.com.ar",
+            "departamentos": [
+                {
+                    "nombre": "Ventas",
+                    "jefe": "Cosme Fulanito",
+                    "subdepartamentos": [
+                        {
+                            "nombre": "Mc Donalds JUC",
+                            "jefe": "Krusty",
+                            "empleados": [
+                                {
+                                    "nombre": "Sideshow Mel",
+                                    "edad": 30,
+                                    "cargo": "Product Analyst",
+                                    "salario": 1250.65,
+                                    "activo": true,
+                                    "fecha_contratacion": "2023-09-10",
+                                    "proyectos": [
+                                        {
+                                            "nombre": "Mc Flurry",
+                                            "estado": "In progress",
+                                            "fecha_inicio": "2022-01-10",
+                                            "fecha_fin": "2025-08-25"
+                                        },
+                                        {
+                                            "nombre": "Mcnifica",
+                                            "estado": "Done",
+                                            "fecha_inicio": "2020-10-13",
+                                            "fecha_fin": "2024-01-01"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nombre": "Krusty",
+                                    "edad": 45,
+                                    "cargo": "Developer",
+                                    "salario": 32250.65,
+                                    "activo": true,
+                                    "fecha_contratacion": "2020-05-15",
+                                    "proyectos": [
+                                        {
+                                            "nombre": "Mc chicken",
+                                            "estado": "On hold",
+                                            "fecha_inicio": "2022-01-10"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "nombre": "Mc Donalds Chicken",
+                            "jefe": "Principal Skinner",
+                            "empleados": [
+                                {
+                                    "nombre": "Principal Skinner",
+                                    "edad": 30,
+                                    "cargo": "Project Manager",
+                                    "salario": 150.65,
+                                    "activo": true,
+                                    "fecha_contratacion": "2023-09-10",
+                                    "proyectos": [
+                                        {
+                                            "nombre": "Chicken burger",
+                                            "estado": "In progress",
+                                            "fecha_inicio": "2022-01-10",
+                                            "fecha_fin": "2025-08-25"
+                                        },
+                                        {
+                                            "nombre": "Rechicken",
+                                            "estado": "Done",
+                                            "fecha_inicio": "2020-10-13",
+                                            "fecha_fin": "2024-01-01"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nombre": "Edna Krabappel",
+                                    "edad": 35,
+                                    "cargo": "Marketing",
+                                    "salario": 350.65,
+                                    "activo": false,
+                                    "fecha_contratacion": "2020-05-15",
+                                    "proyectos": [
+                                        {
+                                            "nombre": "Chicken roll",
+                                            "estado": "Canceled",
+                                            "fecha_inicio": "2022-01-10",
+                                            "fecha_fin": "2022-02-20"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "nombre": "Compras",
+                    "jefe": "Fat Tony",
+                    "subdepartamentos": [
+                        {
+                            "nombre": "Comestibles",
+                            "jefe": "Apu Nahasapeemape",
+                            "empleados": [
+                                {
+                                    "nombre": "Apu Nahasapeemape",
+                                    "edad": 34,
+                                    "cargo": "Product Analyst",
+                                    "salario": 250.65,
+                                    "activo": true,
+                                    "fecha_contratacion": "2023-09-10",
+                                    "proyectos": [
+                                        {
+                                            "nombre": "kwik-e-mart",
+                                            "estado": "In progress",
+                                            "fecha_inicio": "2022-01-10"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "nombre": "Cobranzas",
+                            "empleados": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "nombre_empresa": "Beetroot squad",
+            "fundacion": 1990,
+            "direccion": {
+                "calle": "Calle Falsa 333",
+                "ciudad": "shelbyville",
+                "pais": "USA"
+            },
+            "ingresos_anuales": 2000.25,
+            "pyme": true,
+            "departamentos": [
+                {
+                    "nombre": "Produccion",
+                    "jefe": "Shelbyville Manhattan",
+                    "subdepartamentos": [
+                        {
+                            "nombre": "Desarrollo",
+                            "jefe": "Jack Bauer",
+                            "empleados": [
+                                {
+                                    "nombre": "Jack Bauer",
+                                    "edad": 30,
+                                    "cargo": "Developer",
+                                    "salario": 10.65,
+                                    "activo": true,
+                                    "fecha_contratacion": "1991-09-10",
+                                    "proyectos": [
+                                        {
+                                            "nombre": "Jugo betabel",
+                                            "estado": "In progress",
+                                            "fecha_inicio": "2022-01-10"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "nombre": "Shelby",
+                                    "edad": 8,
+                                    "cargo": "Developer",
+                                    "salario": 50.65,
+                                    "activo": true,
+                                    "fecha_contratacion": "2010-05-15",
+                                    "proyectos": null
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "version": "1.0",
+    "firma_digital": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+}'''
+
+result = parser.parse(data)
+print(result)
