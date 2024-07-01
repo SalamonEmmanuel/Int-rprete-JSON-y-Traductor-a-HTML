@@ -215,22 +215,85 @@ def p_error(p):
 
 parser = yacc.yacc()
 
-def main():
-    if len(sys.argv) != 2:
-        print("Uso: python parser.py <archivo_json>")
-        sys.exit(1)
+textocreado = ""
+correcto=0
 
-    archivo_json = sys.argv[1]
-    
-    try:
-        with open(archivo_json, 'r', encoding='utf-8') as archivo:
-            data = json.load(archivo)
-            result = parser.parse(json.dumps(data))
-            print(result)
-    except FileNotFoundError:
-        print(f"El archivo {archivo_json} no se encontró.")
-    except json.JSONDecodeError:
-        print(f"Error al decodificar el archivo JSON {archivo_json}.")
+codigo = ""
+Arch = None
 
-if __name__ == "__main__":
-    main()
+#Funcion interactuar con caja de texto superior
+def Pantalla():
+    global codigo, correcto, textocreado, Arch
+
+    pantalla1.configure(state="normal")
+    pantalla1.delete("1.0", "end")
+    pantalla1.configure(state="disabled")
+
+    codigo = pantalla.get("1.0", 'end-1c')
+   
+    correcto = 0
+
+    parser.parse(codigo)
+
+    if codigo != "" and correcto == 0:
+        respuesta = messagebox.askquestion("Resultado", "Compilación exitosa.\n¿Desea guardar el código como archivo HTML?", icon="question")
+
+        if respuesta == 'yes':
+            if textocreado != "" and correcto == 0:
+                if Arch != None:
+                    messagebox.showinfo("Resultado", "Elija el lugar para guardar el archivo ;)")
+                    file_path = filedialog.asksaveasfilename(initialfile=os.path.splitext(os.path.basename(Arch.name))[0], defaultextension=".html", filetypes=[("Archivos HTML", "*.html")])
+                    if file_path:
+                        with open(file_path, "w") as archivo_guardado:
+                            archivo_guardado.write(textocreado)
+                            messagebox.showinfo("Resultado", "Archivo guardado correctamente como HTML.")
+                else:
+                    messagebox.showinfo("Resultado", "Asigne un nombre y elija el lugar para guardar el archivo ;)")
+                    file_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("Archivos HTML", "*.html")])
+                    if file_path:
+                        with open(file_path, "w") as archivo_guardado:
+                            archivo_guardado.write(textocreado)
+                            messagebox.showinfo("Resultado", "Archivo guardado correctamente como HTML.")
+    else:
+        textocreado=""
+        
+#Funcion abrir archivo
+def OpenArch():
+    global Arch
+    tipos_archivo = [("", "*.txt *.xml")]
+    Archivo = filedialog.askopenfilename(title="Seleccionar archivo", filetypes=tipos_archivo)
+    Arch = codecs.open(Archivo, "r", encoding="utf-8")
+    a = Arch.read()
+    pantalla.delete("1.0", "end")
+    pantalla.insert('1.0', a)
+
+ventana_principal=Tk()
+ventana=Frame(ventana_principal)
+ventana_principal.title("Parser G-22")
+ventana_principal.resizable(0, 0)
+
+#Caja de texto superior
+pantalla= Entry(ventana)
+pantalla= Text( width=100, height=20, font=("Helvetica", 10))
+
+#Ubicar caja
+pantalla.grid (row=1, column=0, columnspan=4,padx=10,pady=10)
+
+#Caja de inferior
+pantalla1= Entry(ventana)
+pantalla1= Text(width=100, height=10, font=("Helvetica", 10))
+pantalla1.configure(state="disabled")
+
+#Ubicar caja
+pantalla1.grid (row=2, column=0, columnspan=4,padx=10,pady=10)
+
+#Boton Abrir archivo
+ventana.boton_abrirarchivo= ttk.Button(text="Abrir Archivo", command=OpenArch, width=20).grid(row=3,column=0,pady=15,columnspan=2)
+
+#Boton compilar
+ventana.boton_compilar= ttk.Button(text="Compilar", command=Pantalla, width=20).grid(row=3, column=1,padx=10,pady=15,columnspan=2)
+
+#Boton Exit
+ventana.boton_cerrar= ttk.Button(ventana_principal,text='Cerrar',command=lambda: ventana_principal.quit(), width=20).grid(row=3, column=2,pady=15, columnspan=2)
+
+ventana_principal.mainloop()
