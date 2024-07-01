@@ -222,4 +222,5 @@ if __name__ == "__main__":
         
         else:
             print("Opción no válida. Por favor, selecciona una opción válida (1, 2 o 3).")
+            
  # type: ignore
