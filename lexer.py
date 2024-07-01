@@ -5,11 +5,33 @@ tokens = ['integer', 'float', 'bool', 'date', 'CARGO_EMPLEADO', 'comma',
           'pa', 'dp', 'pc', 'lla', 'llc', 'patron_url', 'ESTADO_PROYECTO', 'null',
           'fundacion', 'ingresos_anuales', 'pyme', 'link', 'calle', 'ciudad',
           'pais', 'nombre', 'jefe', 'edad', 'cargo', 'salario', 'activo', 'fecha_contratacion',
-          'estado', 'fecha_inicio', 'fecha_fin', 'version', 'firma_digital', 'nombre_empresa', 'string'] 
-
+          'estado', 'fecha_inicio', 'fecha_fin', 'version', 'firma_digital', 'nombre_empresa', 'string', 'empresas', 
+          'direccion', 'departamentos', 'subdepartamentos', 'empleados', 'proyectos'] 
+ 
 # Expresiones regulares para los tokens
+
+def t_proyectos(t):
+    r'\"proyectos\"'
+    return t
+
+def t_empleados(t):
+    r'\"empleados\"'
+    return t
+
+def t_subdepartamentos(t):
+    r'\"subdepartamentos\"'
+    return t
+
+def t_departamentos(t):
+    r'\"departamentos\"'
+    return t
+
 def t_fundacion(t):
     r'\"fundacion\"'
+    return t
+
+def t_direccion(t):
+    r'\"direccion\"'
     return t
 
 def t_ingresos_anuales(t):
@@ -88,8 +110,12 @@ def t_version(t):
     r'\"version\"'
     return t
 
+def t_empresas(t):
+    r'\"empresas\"'
+    return t
+
 t_pa = r'\['
-t_dp = r':'
+t_dp = r':' 
 t_pc = r'\]'
 t_lla = r'\{'
 t_llc = r'\}'
@@ -100,7 +126,7 @@ t_ignore = ' \t'
 
 # Funciones para tokens más complejos, como URLs y valores específicos de cadenas, que usan expresiones regulares para coincidir con patrones específicos.
 def t_patron_url(t):
-    r'https?://[a-zA-Z0-9.-]+(?:\:\d+)?(?:/[a-zA-Z0-9._/#-]*)?'
+    r'\"https?://[a-zA-Z0-9.-]+(?:\:\d+)?(?:/[a-zA-Z0-9._/#-]*)?\"'
     t.value = f"patron_url: {t.value}"
     return t
 
@@ -149,7 +175,7 @@ def t_newline(t):
 
 # Maneja caracteres no reconocidos, imprimiendo un mensaje de error y avanzando al siguiente carácter.
 def t_error(t):
-    print(f"Caracter no reconocido: '{t.value[0]}' en la línea {t.lexer.lineno}")
+    print(f"Caracter no reconocido: '{t.value[0]}")
     t.lexer.skip(1)
 
 lexer = lex.lex()
