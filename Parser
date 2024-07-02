@@ -5,7 +5,7 @@ from Lexer import tokens
 # Lista para almacenar errores
 errores_gramatica = []
 
-# Definición de las reglas gramaticales ...
+# Definición de las reglas gramaticales
 
 def p_Sigma(p):
     '''Sigma : lla EmpresasI comma Version comma Firma_digital llc
