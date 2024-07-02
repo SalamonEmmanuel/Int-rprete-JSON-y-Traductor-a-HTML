@@ -124,6 +124,8 @@ t_comma = r','
 # Ignorar espacios en blanco y tabulaciones
 t_ignore = ' \t'
 
+
+
 # Funciones para tokens más complejos, como URLs y valores específicos de cadenas, que usan expresiones regulares para coincidir con patrones específicos.
 def t_patron_url(t):
     r'\"https?://[a-zA-Z0-9.-]+(?:\:\d+)?(?:/[a-zA-Z0-9._/#-]*)?\"'
@@ -175,7 +177,7 @@ def t_newline(t):
 
 # Maneja caracteres no reconocidos, imprimiendo un mensaje de error y avanzando al siguiente carácter.
 def t_error(t):
-    print(f"Caracter no reconocido: '{t.value[0]}")
+    print(f"Caracter no reconocido: '{t.value[0]}'")
     t.lexer.skip(1)
 
 lexer = lex.lex()
