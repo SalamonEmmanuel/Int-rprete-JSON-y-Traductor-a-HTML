@@ -1,0 +1,179 @@
+{
+    "empresas": [
+      {
+        "nombre_empresa": "Mc Donalds",
+        "fundacion": 2005,
+        "direccion": {
+          "calle": "Calle Falsa 123",
+          "ciudad": "Springfield",
+          "pais": "USA"
+        },
+        "ingresos_anuales": 200000.25,
+        "pyme": false,
+        "link": "https://www.mcdonalds.com.ar",
+        "departamentos": [
+          {
+           "nombre": "Ventas",
+            "jefe": "Cosme Fulanito",
+            "subdepartamentos": [
+              {
+                "nombre": "Mc Donalds JUC",
+                "jefe": "Krusty",
+                "empleados": [
+                {
+                  "nombre": "Sideshow Mel",
+                  "edad": 30,
+                  "cargo": "Product Analyst",
+                  "salario": 125.05,
+                  "activo": true,
+                  "fecha_contratacion": "2023-09-10",
+                  "proyectos": [
+                  {
+                    "nombre": "Mc Flurry",
+                    "estado": "In progress",
+                    "fecha_inicio": "2022-01-10",
+                    "fecha_fin": "2025-08-25"
+                  },
+                  {
+                    "nombre": "Mcnifica",
+                    "estado": "Done",
+                    "fecha_inicio": "2020-10-13",
+                    "fecha_fin": "2024-01-01"
+                  } ]
+                },
+                {
+                  "nombre": "Krusty",
+                  "edad": 45,
+                  "cargo": "Developer",
+                  "salario": 32250.65,
+                  "activo": true,
+                  "fecha_contratacion": "2020-05-15",
+                  "proyectos": [
+                  {
+                    "nombre": "Mc chicken",
+                    "estado": "On hold",
+                    "fecha_inicio": "2022-01-10"
+                  } ]
+                }  ]      
+              },
+              {
+                "nombre": "Mc Donalds Chicken",
+                "jefe": "Principal Skinner",
+                "empleados": [
+                {
+                  "nombre": "Principal Skinner",
+                  "edad": 30,
+                  "cargo": "Project Manager",
+                  "salario": 150.65,
+                  "activo": true,
+                  "fecha_contratacion": "2023-09-10",
+                  "proyectos": [
+                  {
+                    "nombre": "Chicken burger",
+                    "estado": "In progress",
+                    "fecha_inicio": "2022-01-10",
+                    "fecha_fin": "2025-08-25"
+                  },
+                  {
+                    "nombre": "Rechicken",
+                    "estado": "Done",
+                    "fecha_inicio": "2020-10-13",
+                    "fecha_fin": "2024-01-01"
+                  } ]
+                },
+                {
+                  "nombre": "Edna Krabappel",
+                  "edad": 35,
+                  "cargo": "Marketing",
+                  "salario": 350.65,
+                  "activo": false,
+                  "fecha_contratacion": "2020-05-15",
+                  "proyectos": [
+                  {
+                    "nombre": "Chicken roll",
+                    "estado": "Canceled",
+                    "fecha_inicio": "2022-01-10",
+                    "fecha_fin": "2022-02-20"
+                  } ]
+                }  ]      
+              } ]
+          },
+          {
+            "nombre": "Compras",
+             "jefe": "Fat Tony",
+             "subdepartamentos": [
+               {
+                 "nombre": "Comestibles",
+                 "jefe": "Apu Nahasapeemape",
+                 "empleados": [
+                 {
+                   "nombre": "Apu Nahasapeemape",
+                   "edad": 34,
+                   "cargo": "Product Analyst",
+                   "salario": 250.65,
+                   "activo": true,
+                   "fecha_contratacion": "2023-09-10",
+                   "proyectos": [
+                   {
+                     "nombre": "kwik-e-mart",
+                     "estado": "In progress",
+                     "fecha_inicio": "2022-01-10"
+                   }]
+                 } ]      
+               },
+               {
+                 "nombre": "Cobranzas",
+                 "empleados": []      
+               } ]
+           } ]
+      },
+      {
+        "nombre_empresa": "Beetroot squad",
+        "fundacion": 1990,
+        "direccion": {
+          "calle": "Calle Falsa 333",
+          "ciudad": "shelbyville",
+          "pais": "USA"
+        },
+        "ingresos_anuales": 2000.25,
+        "pyme": true,
+        "departamentos": [
+          {
+           "nombre": "Produccion",
+            "jefe": "Shelbyville Manhattan",
+            "subdepartamentos": [
+              {
+                "nombre": "Desarrollo",
+                "jefe": "Jack Bauer",
+                "empleados": [
+                {
+                  "nombre": "Jack Bauer",
+                  "edad": 30,
+                  "cargo": "Developer",
+                  "salario": 10.65,
+                  "activo": true,
+                  "fecha_contratacion": "1991-09-10",
+                  "proyectos": [
+                  {
+                    "nombre": "Jugo betabel",
+                    "estado": "In progress",
+                    "fecha_inicio": "2022-01-10"
+                  } ]
+                },
+                {
+                  "nombre": "Shelby",
+                  "edad": 8,
+                  "cargo": "Developer",
+                  "salario": 50.65,
+                  "activo": true,
+                  "fecha_contratacion": "2010-05-15",
+                  "proyectos": null
+                }  ]      
+              }]
+          } ]
+      }
+    ],
+    "version": "1.0",
+    "firma_digital": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+  }
+  
