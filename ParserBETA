@@ -4,7 +4,8 @@ import os
 import codecs
 import tkinter
 from tkinter import filedialog
-from tkinter import Entry, Frame, Tk, Text, filedialog, ttk, messagebox
+from tkinter import Entry, Frame, Tk, Text, filedialog, ttk, messagebox, Label
+from ttkthemes import ThemedTk 
 import json
 
 # Definición de la gramática
@@ -189,7 +190,7 @@ def json_to_html(data):
     html_output = []
 
     def process_company(company):
-        html_output.append('<div style="border:1px solid gray; padding:20px;">')
+        html_output.append('<div style="border:1px solid gray; padding:20px; margin-bottom:20px;">')
         html_output.append(f'<h1>{company["nombre_empresa"]}</h1>')
 
         if "link" in company and company["link"] is not None:
@@ -201,7 +202,7 @@ def json_to_html(data):
         html_output.append('</div>')
 
     def process_department(department):
-        html_output.append('<div>')
+        html_output.append('<div style="margin-left:20px;">')
         html_output.append(f'<h2>{department["nombre"]}</h2>')
 
         for subdept in department.get("subdepartamentos", []):
@@ -210,7 +211,7 @@ def json_to_html(data):
         html_output.append('</div>')
 
     def process_subdepartment(subdepartment):
-        html_output.append('<div>')
+        html_output.append('<div style="margin-left:40px;">')
         html_output.append(f'<h3>{subdepartment["nombre"]}</h3>')
 
         for emp in subdepartment.get("empleados", []):
@@ -219,11 +220,12 @@ def json_to_html(data):
         html_output.append('</div>')
 
     def process_employee(employee):
-        html_output.append('<ul>')
-        html_output.append(f'<li>{employee["nombre"]}</li>')
+        html_output.append('<div style="border:1px solid blue; padding:10px; margin-left:60px; margin-bottom:10px;">')
+        html_output.append(f'<h4>{employee["nombre"]}</h4>')
 
         if "proyectos" in employee:
-            html_output.append('<table><tr><th>Nombre</th><th>Estado</th><th>Fecha Inicio</th><th>Fecha Fin</th></tr>')
+            html_output.append('<table border="1" style="width:100%; margin-top:10px;">')
+            html_output.append('<tr><th>Nombre</th><th>Estado</th><th>Fecha Inicio</th><th>Fecha Fin</th></tr>')
             for proj in employee["proyectos"] or []:
                 html_output.append('<tr>')
                 html_output.append(f'<td>{proj["nombre"]}</td>')
@@ -233,7 +235,7 @@ def json_to_html(data):
                 html_output.append('</tr>')
             html_output.append('</table>')
 
-        html_output.append('</ul>')
+        html_output.append('</div>')
 
     for empresa in data.get("empresas", []):
         process_company(empresa)
@@ -248,13 +250,11 @@ def Pantalla():
     pantalla1.configure(state="disabled")
 
     codigo = pantalla.get("1.0", 'end-1c')
-   
     correcto = 0
 
     parser.parse(codigo)
 
     if codigo != "" and correcto == 0:
-        # Traducir a HTML
         try:
             json_data = json.loads(codigo)
             textocreado = json_to_html(json_data)
@@ -267,61 +267,65 @@ def Pantalla():
         respuesta = messagebox.askquestion("Resultado", "Compilación exitosa.\n¿Desea guardar el código como archivo HTML?", icon="question")
 
         if respuesta == 'yes':
-            if textocreado != "" and correcto == 0:
-                if Arch != None:
-                    messagebox.showinfo("Resultado", "Elija el lugar para guardar el archivo")
-                    file_path = filedialog.asksaveasfilename(initialfile=os.path.splitext(os.path.basename(Arch.name))[0], defaultextension=".html", filetypes=[("Archivos HTML", "*.html")])
-                    if file_path:
-                        with open(file_path, "w") as archivo_guardado:
-                            archivo_guardado.write(textocreado)
-                            messagebox.showinfo("Resultado", "Archivo guardado correctamente como HTML.")
-                else:
-                    messagebox.showinfo("Resultado", "Asigne un nombre y elija el lugar para guardar el archivo ;)")
-                    file_path = filedialog.asksaveasfilename(defaultextension=".html", filetypes=[("Archivos HTML", "*.html")])
-                    if file_path:
-                        with open(file_path, "w") as archivo_guardado:
-                            archivo_guardado.write(textocreado)
-                            messagebox.showinfo("Resultado", "Archivo guardado correctamente como HTML.")
+            messagebox.showinfo("Resultado", "Elija el lugar para guardar el archivo")
+            file_path = filedialog.asksaveasfilename(
+                initialfile=os.path.splitext(os.path.basename(Arch.name))[0] if Arch else '',
+                defaultextension=".html",
+                filetypes=[("Archivos HTML", "*.html")]
+            )
+            if file_path:
+                with open(file_path, "w") as archivo_guardado:
+                    archivo_guardado.write(textocreado)
+                    messagebox.showinfo("Resultado", "Archivo guardado correctamente como HTML.")
     else:
-        textocreado=""
-        
+        textocreado = ""  
+
 #Funcion abrir archivo
 def OpenArch():
     global Arch
     tipos_archivo = [("Archivos JSON", "*.json")]
     Archivo = filedialog.askopenfilename(title="Seleccionar archivo", filetypes=tipos_archivo)
     Arch = codecs.open(Archivo, "r", encoding="utf-8")
+    ttk.Style().theme_use('vista') 
     a = Arch.read()
     pantalla.delete("1.0", "end")
     pantalla.insert('1.0', a)
 
-ventana_principal=Tk()
+#Definición del estilo de la ventana
+ventana_principal = ThemedTk(theme="classic")
 ventana=Frame(ventana_principal)
-ventana_principal.title("BlackMesa")
+ventana_principal.title("Black Mesa Translator")
 ventana_principal.resizable(0, 0)
 
-#Caja de texto superior
-pantalla= Entry(ventana)
-pantalla= Text(width=100, height=20, font=("Helvetica", 10))
+# Configurar el layout de la ventana principal
+ventana_principal.columnconfigure(0, weight=1)
+ventana_principal.columnconfigure(1, weight=1)
 
-#Ubicar caja
-pantalla.grid(row=1, column=0, columnspan=4, padx=10, pady=10)
+# Color de la ventana principal
+ventana_principal.configure(bg="#ED9121")
 
-#Caja de inferior
-pantalla1= Entry(ventana)
-pantalla1= Text(width=100, height=10, font=("Helvetica", 10))
-pantalla1.configure(state="disabled")
+# Etiqueta para el cuadro de texto izquierdo
+label_texto_analizar = Label(ventana_principal, text="Texto a analizar:", font=("Helvetica", 10), bg="#ED9121")
+label_texto_analizar.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="w")
 
-#Ubicar caja
-pantalla1.grid(row=2, column=0, columnspan=4, padx=10, pady=10)
+# Caja de texto izquierda
+pantalla = Text(ventana_principal, width=50, height=20, font=("Helvetica", 10), bg="floralwhite", fg="black")
+pantalla.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
-#Boton Abrir archivo
-ventana.boton_abrirarchivo = ttk.Button(text="Abrir Archivo", command=OpenArch, width=20).grid(row=3, column=0, pady=15, columnspan=2)
+# Etiqueta para el cuadro de texto derecho
+label_texto_analizar = Label(ventana_principal, text="Errores:", font=("Helvetica", 10), bg="#ED9121")
+label_texto_analizar.grid(row=0, column=1, padx=10, pady=(10, 0), sticky="w")
 
-#Boton compilar
-ventana.boton_compilar = ttk.Button(text="Compilar", command=Pantalla, width=20).grid(row=3, column=1, padx=10, pady=15, columnspan=2)
+# Caja de texto derecha
+pantalla1 = Text(ventana_principal, width=50, height=20, font=("Helvetica", 10), bg="gainsboro", fg="black")
+pantalla1.grid(row=1, column=1, padx=10, pady=10, sticky="nsew") 
 
-#Boton Exit
-ventana.boton_cerrar = ttk.Button(ventana_principal, text='Cerrar', command=lambda: ventana_principal.quit(), width=20).grid(row=3, column=2, pady=15, columnspan=2)
+# Botón Abrir archivo
+boton_abrirarchivo = ttk.Button(ventana_principal, text="Abrir Archivo", command=OpenArch, width=20)
+boton_abrirarchivo.grid(row=2, column=0, padx=10, pady=15, sticky="ew")
+
+# Botón Compilar
+boton_compilar = ttk.Button(ventana_principal, text="Compilar", command=Pantalla, width=20)
+boton_compilar.grid(row=2, column=1, padx=10, pady=15, sticky="ew") 
 
 ventana_principal.mainloop()
