@@ -168,13 +168,26 @@ def p_Salario(p):
 
 def p_Edad(p):
     '''Edad : edad dp integer'''
-
-# control de errores
+    
+# Control de errores 
 def p_error(p):
     global correcto
-    correcto=1
+    correcto = 1
+    
+    if p:
+        # Calcula el número de línea y contexto usando lexpos
+        pos = p.lexpos
+        line_count = codigo.count('\n', 0, pos) + 1
+        line_start = codigo.rfind('\n', 0, pos) + 1
+        line_end = codigo.find('\n', pos)
+        line_end = len(codigo) if line_end == -1 else line_end
+        context = codigo[line_start:line_end]
+        
+        error_msg = f"Error de sintaxis en la línea {line_count}:\n'{p.value}'\nContexto:\n{context}\n"
+        
+    # Mostrar el error en la interfaz gráfica
     pantalla1.configure(state="normal")
-    pantalla1.insert('1.0', "Error en la línea "+str(p.lineno)+"\nVerifique la cadena "+str(p.value)+"\n\n")
+    pantalla1.insert('end', error_msg)
     pantalla1.configure(state="disabled")
 
 parser = yacc.yacc()
