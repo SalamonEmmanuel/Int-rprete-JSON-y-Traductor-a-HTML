@@ -1,11 +1,14 @@
 import ply.yacc as yacc
-import json
 from Lexer import tokens
+import os
+import codecs
+import tkinter
+from tkinter import filedialog
+from tkinter import Entry, Frame, Tk, Text, filedialog, ttk, messagebox, Label
+from ttkthemes import ThemedTk 
+import json
 
-# Lista para almacenar errores
-errores_gramatica = []
-
-# Definición de las reglas gramaticales
+# Definición de la gramática
 
 def p_Sigma(p):
     '''Sigma : lla EmpresasI comma Version comma Firma_digital llc
@@ -165,62 +168,178 @@ def p_Salario(p):
 
 def p_Edad(p):
     '''Edad : edad dp integer'''
-
+    
+# Control de errores 
 def p_error(p):
-    global errores_gramatica
+    global correcto
+    correcto = 1
+    
     if p:
-        error_message = f"Error en la línea {p.lineno}, cadena no reconocida: {p.value}"
-    else:
-        error_message = "Error de sintaxis al final del archivo"
-    errores_gramatica.append(error_message)
-    print(error_message)
+        # Calcula el número de línea y contexto usando lexpos
+        pos = p.lexpos
+        line_count = codigo.count('\n', 0, pos) + 1
+        line_start = codigo.rfind('\n', 0, pos) + 1
+        line_end = codigo.find('\n', pos)
+        line_end = len(codigo) if line_end == -1 else line_end
+        context = codigo[line_start:line_end]
+        
+        error_msg = f"Error de sintaxis en la línea {line_count}:\n'{p.value}'\nContexto:\n{context}\n"
+        
+    # Mostrar el error en la interfaz gráfica
+    pantalla1.configure(state="normal")
+    pantalla1.insert('end', error_msg)
+    pantalla1.configure(state="disabled")
 
-# Construir el parser
 parser = yacc.yacc()
 
-# Función para analizar desde una cadena de entrada
-def parse_input(input_string):
-    global errores_gramatica
-    errores_gramatica = []  # Limpiar errores anteriores
-    parser.parse(input_string)
+textocreado = ""
+correcto=0
 
-# Función para analizar desde un archivo JSON
-def parse_json_file(filename):
-    with open(filename, 'r') as file:
-        parse_input(file.read())
+codigo = ""
+Arch = None
 
-# Ejemplo de uso:
-if __name__ == "__main__":
-    while True:
-        opcion = input("Por favor, selecciona una opción:\n  1. Ingresar cadena para análisis sintáctico.\n  2. Ingresar nombre de archivo JSON para análisis sintáctico.\n  3. Salir\nOpción: ")
-        
-        if opcion == '1':
-            prueba = input("Ingresa la cadena para análisis sintáctico: ")
-            parse_input(prueba)
-            if not errores_gramatica:
-                print("Análisis sintáctico exitoso")
-            else:
-                print("Errores encontrados:")
-                for error in errores_gramatica:
-                    print(error)
-        
-        elif opcion == '2':
-            archivo_json = input("Ingresa el nombre del archivo JSON (incluyendo la extensión): ")
-            try:
-                parse_json_file(archivo_json)
-                if not errores_gramatica:
-                    print("Análisis sintáctico exitoso")
-                else:
-                    print("Errores encontrados:")
-                    for error in errores_gramatica:
-                        print(error)
-            except FileNotFoundError:
-                print(f"El archivo {archivo_json} no fue encontrado.")
-        
-        elif opcion == '3':
-            break
-        
-        else:
-            print("Opción no válida. Por favor, selecciona una opción válida (1, 2 o 3).")
-            
- # type: ignore
+def json_to_html(data):
+    html_output = []
+
+    def process_company(company):
+        html_output.append('<div style="border:1px solid gray; padding:20px; margin-bottom:20px;">')
+        html_output.append(f'<h1>{company["nombre_empresa"]}</h1>')
+
+        if "link" in company and company["link"] is not None:
+            html_output.append(f'<a href="{company["link"]}">Link</a>')
+
+        for dept in company.get("departamentos", []):
+            process_department(dept)
+
+        html_output.append('</div>')
+
+    def process_department(department):
+        html_output.append('<div style="margin-left:20px;">')
+        html_output.append(f'<h2>{department["nombre"]}</h2>')
+
+        for subdept in department.get("subdepartamentos", []):
+            process_subdepartment(subdept)
+
+        html_output.append('</div>')
+
+    def process_subdepartment(subdepartment):
+        html_output.append('<div style="margin-left:40px;">')
+        html_output.append(f'<h3>{subdepartment["nombre"]}</h3>')
+
+        for emp in subdepartment.get("empleados", []):
+            process_employee(emp)
+
+        html_output.append('</div>')
+
+    def process_employee(employee):
+        html_output.append('<div style="border:1px solid blue; padding:10px; margin-left:60px; margin-bottom:10px;">')
+        html_output.append(f'<h4>{employee["nombre"]}</h4>')
+
+        if "proyectos" in employee:
+            html_output.append('<table border="1" style="width:100%; margin-top:10px;">')
+            html_output.append('<tr><th>Nombre</th><th>Estado</th><th>Fecha Inicio</th><th>Fecha Fin</th></tr>')
+            for proj in employee["proyectos"] or []:
+                html_output.append('<tr>')
+                html_output.append(f'<td>{proj["nombre"]}</td>')
+                html_output.append(f'<td>{proj.get("estado", "")}</td>')
+                html_output.append(f'<td>{proj.get("fecha_inicio", "")}</td>')
+                html_output.append(f'<td>{proj.get("fecha_fin", "")}</td>')
+                html_output.append('</tr>')
+            html_output.append('</table>')
+
+        html_output.append('</div>')
+
+    for empresa in data.get("empresas", []):
+        process_company(empresa)
+
+    return '\n'.join(html_output)
+
+
+
+def Pantalla():
+    global codigo, correcto, textocreado, Arch
+
+    pantalla1.configure(state="normal")
+    pantalla1.delete("1.0", "end")
+    pantalla1.configure(state="disabled")
+
+    codigo = pantalla.get("1.0", 'end-1c')
+    correcto = 0
+
+    parser.parse(codigo)
+
+    if codigo != "" and correcto == 0:
+        try:
+            json_data = json.loads(codigo)
+            textocreado = json_to_html(json_data)
+        except json.JSONDecodeError as e:
+            pantalla1.configure(state="normal")
+            pantalla1.insert('1.0', f"Error en la traducción JSON a HTML: {str(e)}\n\n")
+            pantalla1.configure(state="disabled")
+            return
+
+        respuesta = messagebox.askquestion("Resultado", "Compilación exitosa.\n¿Desea guardar el código como archivo HTML?", icon="question")
+
+        if respuesta == 'yes':
+            messagebox.showinfo("Resultado", "Elija el lugar para guardar el archivo")
+            file_path = filedialog.asksaveasfilename(
+                initialfile=os.path.splitext(os.path.basename(Arch.name))[0] if Arch else '',
+                defaultextension=".html",
+                filetypes=[("Archivos HTML", "*.html")]
+            )
+            if file_path:
+                with open(file_path, "w") as archivo_guardado:
+                    archivo_guardado.write(textocreado)
+                    messagebox.showinfo("Resultado", "Archivo guardado correctamente como HTML.")
+    else:
+        textocreado = ""  
+
+#Funcion abrir archivo
+def OpenArch():
+    global Arch
+    tipos_archivo = [("Archivos JSON", "*.json")]
+    Archivo = filedialog.askopenfilename(title="Seleccionar archivo", filetypes=tipos_archivo)
+    Arch = codecs.open(Archivo, "r", encoding="utf-8")
+    ttk.Style().theme_use('vista') 
+    a = Arch.read()
+    pantalla.delete("1.0", "end")
+    pantalla.insert('1.0', a)
+
+#Definición del estilo de la ventana
+ventana_principal = ThemedTk(theme="classic")
+ventana=Frame(ventana_principal)
+ventana_principal.title("Black Mesa Translator")
+ventana_principal.resizable(0, 0)
+
+# Configurar el layout de la ventana principal
+ventana_principal.columnconfigure(0, weight=1)
+ventana_principal.columnconfigure(1, weight=1)
+
+# Color de la ventana principal
+ventana_principal.configure(bg="#ED9121")
+
+# Etiqueta para el cuadro de texto izquierdo
+label_texto_analizar = Label(ventana_principal, text="Texto a analizar:", font=("Helvetica", 10), bg="#ED9121")
+label_texto_analizar.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="w")
+
+# Caja de texto izquierda
+pantalla = Text(ventana_principal, width=50, height=20, font=("Helvetica", 10), bg="floralwhite", fg="black")
+pantalla.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+
+# Etiqueta para el cuadro de texto derecho
+label_texto_analizar = Label(ventana_principal, text="Errores:", font=("Helvetica", 10), bg="#ED9121")
+label_texto_analizar.grid(row=0, column=1, padx=10, pady=(10, 0), sticky="w")
+
+# Caja de texto derecha
+pantalla1 = Text(ventana_principal, width=50, height=20, font=("Helvetica", 10), bg="gainsboro", fg="black")
+pantalla1.grid(row=1, column=1, padx=10, pady=10, sticky="nsew") 
+
+# Botón Abrir archivo
+boton_abrirarchivo = ttk.Button(ventana_principal, text="Abrir Archivo", command=OpenArch, width=20)
+boton_abrirarchivo.grid(row=2, column=0, padx=10, pady=15, sticky="ew")
+
+# Botón Compilar
+boton_compilar = ttk.Button(ventana_principal, text="Compilar", command=Pantalla, width=20)
+boton_compilar.grid(row=2, column=1, padx=10, pady=15, sticky="ew") 
+
+ventana_principal.mainloop()
