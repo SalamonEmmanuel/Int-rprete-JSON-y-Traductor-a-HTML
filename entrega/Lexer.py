@@ -128,7 +128,7 @@ t_ignore = ' \t'
 
 # Funciones para tokens más complejos, como URLs y valores específicos de cadenas, que usan expresiones regulares para coincidir con patrones específicos.
 def t_patron_url(t):
-    r'\"https?://[a-zA-Z0-9.-]+(?:\:\d+)?(?:/[a-zA-Z0-9._/#-]*)?\"'
+    r'"https?://(?!.*\.\.)[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*(?:\:[0-9]+)?(?:/[a-zA-Z0-9._/#-]*)?"'
     t.value = f"patron_url: {t.value}"
     return t
 
