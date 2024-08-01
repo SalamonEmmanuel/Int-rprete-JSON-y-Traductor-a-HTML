@@ -198,7 +198,6 @@ correcto=0
 codigo = ""
 Arch = None
 
-
 def json_to_html(data):
     html_output = []
 
@@ -254,6 +253,8 @@ def json_to_html(data):
         process_company(empresa)
 
     return '\n'.join(html_output)
+
+
 
 def Pantalla():
     global codigo, correcto, textocreado, Arch
